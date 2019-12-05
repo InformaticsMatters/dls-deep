@@ -1,0 +1,8 @@
+language: python
+
+services:
+- docker
+
+before_install:
+- docker build -t informaticsmatters-deep-base-centos7:latest base
+- docker build -t informaticsmatters-gnina-centos7:latest gnina
