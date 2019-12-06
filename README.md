@@ -5,13 +5,14 @@ Consisting of a base image (that might be generally useful) and a series
 of additional images that add further GPU and deep-learning
 (artificial neural-net) frameworks.
 
-# Building
-The images need to be built in the following order:-
+## Building
+Build the chain of images with: -
 
--   base
--   rdkit
--   cuda
--   gnina
+    $ ./build.sh
+    
+If you want to tag the images with something other than `latest`: -
+
+    $ IMAGE_TAG=2019.12 ./build.sh
 
 ---
 

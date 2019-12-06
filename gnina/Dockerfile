@@ -1,11 +1,37 @@
-ARG base_image="informaticsmatters-deep-cuda-centos7:latest"
-FROM ${base_image}
+ARG from_image="informaticsmatters-deep-cuda-centos7"
+ARG from_tag="latest"
+FROM ${from_image}:${from_tag}
+
+# System packages -------------------------------------------------------------
+
+RUN yum -y -q install \
+        atlas-devel.x86_64 \
+        atlas.x86_64 \
+        atlas-static.x86_64 \
+        bzip2-devel.x86_64 \
+        eigen3-devel.noarch \
+        gflags-devel.x86_64 \
+        git \
+        glog-devel.x86_64 \
+        leveldb-devel.x86_64 \
+        lmdb-devel.x86_64 \
+        numpy.x86_64 \
+        opencv-devel.x86_64 \
+        perl-core \
+        protobuf-compiler.x86_64 \
+        protobuf-devel.x86_64 \
+        python-devel.x86_64 \
+        readline-devel.x86_64 \
+        snappy-devel.x86_64 \
+        sqlite-devel.x86_64 \
+        wget \
+        zlib-devel.x86_64
 
 # libmolgrid (latest) ---------------------------------------------------------
 
 ARG libmolgrid_version="a5bd251"
 
-WORKDIR /home
+WORKDIR /root
 RUN git clone https://github.com/gnina/libmolgrid.git
 
 # Nobble test builds and testing because these appear not to build or run.
@@ -18,7 +44,7 @@ RUN git checkout ${libmolgrid_version} && \
 WORKDIR build
 RUN source scl_source enable devtoolset-8 && \
     cmake .. \
-        -DCUDA_TOOLKIT_ROOT_DIR=${CUDA_TOOLKIT_ROOT_DIR} \
+        -DCUDA_TOOLKIT_ROOT_DIR=${CUDA_ROOT_DIR} \
         -DPYTHON_EXECUTABLE=/usr/bin/python3 \
         -DPYTHON_INCLUDE_DIR=/usr/local/include/python3.7m \
         -DPYTHON_LIBRARY=/usr/local/lib/libpython3.7m.so && \
@@ -35,7 +61,7 @@ ARG gnina_version="16ce46d"
 RUN yum -y install \
         hdf5-devel
 
-WORKDIR /home
+WORKDIR /root
 RUN git clone https://github.com/gnina/gnina.git
 
 # Nobble test builds and testing because these appear not to build or run.

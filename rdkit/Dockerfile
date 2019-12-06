@@ -1,5 +1,16 @@
-ARG base_image="informaticsmatters-deep-base-centos7:latest"
-FROM ${base_image}
+ARG from_image="informaticsmatters-deep-base-centos7"
+ARG from_tag="latest"
+FROM ${from_image}:${from_tag}
+
+# System packages -------------------------------------------------------------
+
+RUN yum -y -q install epel-release && \
+    yum -y -q groupinstall 'Development Tools' && \
+    yum -y -q install \
+        bzip2-devel.x86_64 \
+        git \
+        numpy.x86_64 \
+        wget
 
 # Some modules other frameworks depend on...
 RUN pip3 install \
@@ -9,7 +20,7 @@ RUN pip3 install \
 
 # Boost (1.67.0) --------------------------------------------------------------
 
-WORKDIR /home/boost
+WORKDIR /root/boost
 RUN wget https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.gz 2> /dev/null && \
     tar -xzf boost_1_67_0.tar.gz
 WORKDIR boost_1_67_0
@@ -19,7 +30,9 @@ RUN echo "using python : 3.7 ;" > /root/user-config.jam && \
         --with-python=/usr/bin/python3 \
         --with-python-version=3.7 \
         --with-python-root=/usr/local/lib/python3.7 && \
-    ./b2 -j${N_PROC} install
+    ./b2 -j${N_PROC} install && \
+    cd .. && \
+    rm -rf *
 
 # By default installs to '/usr/local'
 ENV BOOST_ROOT /usr/local
@@ -39,7 +52,7 @@ RUN yum -y -q install \
         libxml2-devel \
         cairo-devel
 
-WORKDIR /home
+WORKDIR /root
 RUN git clone https://github.com/openbabel/openbabel.git
 WORKDIR openbabel
 RUN git checkout tags/openbabel-3-0-0
@@ -66,7 +79,9 @@ RUN source scl_source enable devtoolset-8 && \
         -DPYTHON_EXECUTABLE=/usr/bin/python3 \
         -DWITH_MAEPARSER=off && \
     make -j${N_PROC} && \
-    make -j${N_PROC} install
+    make -j${N_PROC} install && \
+    cd .. && \
+    rm -rf *
 
 # Update the linker library path
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/lib
@@ -80,10 +95,11 @@ LABEL tool.openbabel="v3.0.0"
 
 # Jack uses 2018_03_04 but I get build problems with this
 # relating to python and boost. At least 2019_09_01 builds.
-WORKDIR /home/rdkit
-ENV RDBASE /home/rdkit/rdkit-Release_2019_09_1
+WORKDIR /root/rdkit
+ENV RDBASE /root/rdkit/rdkit-Release_2019_09_1
 RUN wget https://github.com/rdkit/rdkit/archive/Release_2019_09_1.tar.gz 2> /dev/null && \
-    tar -xzf Release_2019_09_1.tar.gz
+    tar -xzf Release_2019_09_1.tar.gz && \
+    rm Release_2019_09_1.tar.gz
 
 # Build...
 WORKDIR rdkit-Release_2019_09_1/build
@@ -95,11 +111,16 @@ RUN source scl_source enable devtoolset-8 && \
         -DPYTHON_LIBRARY=/usr/local/lib/libpython3.7m.so \
         -DPYTHON_NUMPY_INCLUDE_PATH=/usr/local/lib/python3.7/site-packages/numpy/core/include && \
     make -j${N_PROC} && \
-    make -j${N_PROC} install
+    make -j${N_PROC} install && \
+    cd .. && \
+    find . -name "*.o" -exec rm -rf {} \;
 
 # On CentOS
-# we need to make additional links to resemble the UBUNTU names...
-WORKDIR /home/rdkit/rdkit-Release_2019_09_1/lib
+# Compiling RDKit will add the name of the package to the library.
+# e.g. libSmilesParse.so (on UBUNTU Package) becomes libRDKitSmilesParse.so
+# when compiled on CentOS and we need to make additional links to resemble the
+# UBUNTU names...
+WORKDIR ${RDBASE}/lib
 RUN for i in $(ls -1 *.so.1.2019.09.1); \
     do \
         name=`basename $i .so.1.2019.09.1`; \
