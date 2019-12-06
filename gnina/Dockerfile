@@ -49,7 +49,9 @@ RUN source scl_source enable devtoolset-8 && \
         -DPYTHON_INCLUDE_DIR=/usr/local/include/python3.7m \
         -DPYTHON_LIBRARY=/usr/local/lib/libpython3.7m.so && \
      make -j${N_PROC} && \
-     make -j${N_PROC} install
+     make -j${N_PROC} install && \
+     cd .. && \
+     rm -rf *
 
 # A label for this package
 LABEL libmolgrid="${libmolgrid_version}"
@@ -85,7 +87,9 @@ RUN source scl_source enable devtoolset-8 && \
         -DHDF5_DIFF_EXECUTABLE=/usr/bin/h5diff \
         -DOpenBabel3_INSTALL_PREFIX=/usr/local && \
     make -j${N_PROC} && \
-    make -j${N_PROC} install
+    make -j${N_PROC} install && \
+    cd .. && \
+    rm -rf *
 
 # A label for this package
 LABEL tool.gnina=${gnina_version}
