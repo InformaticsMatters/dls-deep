@@ -53,6 +53,8 @@ RUN yum -y install centos-release-scl && \
     yum -y install devtoolset-8 && \
     echo 'source scl_source enable devtoolset-8' > /etc/profile.d/devtoolset-8.sh
 
+LABEL tool.gnu="v8.3.1"
+
 # cmake (3.15.5) --------------------------------------------------------------
 # Essential for OpenBabel and libmolgrid builds
 
@@ -67,24 +69,41 @@ RUN source scl_source enable devtoolset-8 && \
     make -j${N_PROC} install && \
     find . -name "*.o" -exec rm -rf {} \;
 
-# CUDA Toolkit (10.2.89) ------------------------------------------------------
+LABEL tool.cmake="v3.15.5"
 
-WORKDIR /home/cuda
-RUN wget http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda-repo-rhel7-10-2-local-10.2.89-440.33.01-1.0-1.x86_64.rpm 2> /dev/null && \
-    rpm -i cuda-repo-rhel7-10-2-local-10.2.89-440.33.01-1.0-1.x86_64.rpm && \
-    yum clean all && \
-    yum -y install cuda-toolkit-10-2 && \
-    rm cuda-repo-rhel7-10-2-local-10.2.89-440.33.01-1.0-1.x86_64.rpm
+# Python (3.7.5) --------------------------------------------------------------
 
-ENV CUDA_TOOLKIT_ROOT_DIR /usr/local/cuda-10.2
-ENV CUDA_TOOLKIT_BIN_DIR /usr/local/cuda-10.2/bin
-ENV CUDACXX ${CUDA_TOOLKIT_BIN_DIR}/nvcc
+RUN yum -y -q install \
+        bzip2-devel \
+        libffi-devel \
+        openssl-devel
+
+WORKDIR /home/python3.7
+RUN wget https://www.python.org/ftp/python/3.7.5/Python-3.7.5.tgz 2> /dev/null && \
+    tar xzf Python-3.7.5.tgz && \
+    cd Python-3.7.5 && \
+    source scl_source enable devtoolset-8 && \
+    ./configure --enable-optimizations --enable-shared && \
+    make -j${N_PROC} altinstall
+
+# The above results in python and pip at: -
+#   -  /usr/local/bin/python3.7
+#   -  /usr/local/bin/pip3.7
+RUN ln -s /usr/local/bin/python3.7 /usr/bin/python3 && \
+    ln -s /usr/local/bin/pip3.7 /usr/bin/pip3
+
+# Ensure the library path is setup
+ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/lib:/usr/lib:/usr/local/lib
+
+ENV PYTHON_INCLUDES /usr/local/include/python3.7m
+ENV CPLUS_INCLUDE_PATH ${CPLUS_INCLUDE_PATH}:${PYTHON_INCLUDES}
+ENV C_INCLUDE_PATH ${CPLUS_INCLUDE_PATH}:${PYTHON_INCLUDES}
 
 # A label for this package
-LABEL cuda="v10.2.89"
+LABEL tool.python="v3.7.5"
 
 # Wrap-up ---------------------------------------------------------------------
 
 ENV N_PROC ${N_PROC}
 
-WORKDIR /
+WORKDIR /root

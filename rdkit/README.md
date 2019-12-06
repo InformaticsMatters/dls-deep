@@ -4,11 +4,12 @@ corresponding base image.
 
 Adds the following to a CentOS image: -
 
--   libmolgrid
--   gnina
+-   Boost
+-   OpenBabel
+-   RDKit 
 
 ## Building
 
-    $ docker build . -t informaticsmatters-deep-gnina-centos7:latest
+    $ docker build . -t informaticsmatters-deep-rdkit-centos7:latest
     
 ---
