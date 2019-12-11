@@ -5,13 +5,11 @@ FROM ${from_image}:${from_tag}
 # App -------------------------------------------------------------------------
 
 WORKDIR /root/train
-COPY files ./
+ADD files.tar.gz ./
+WORKDIR fragalysis_test_files
+COPY requirements.txt ./
 RUN pip3 install -r requirements.txt && \
     chmod -R 0755 *.py && \
     chmod -R 0755 *.sh
 
-ENV PYTHONPATH /usr/local/python/caffe:/usr/local/lib/python3.7/site-packages
-
-# Wrap-up ---------------------------------------------------------------------
-
-WORKDIR /root/train
+#ENV PYTHONPATH /usr/local/python/caffe:/usr/local/lib/python3.7/site-packages
