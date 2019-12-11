@@ -88,6 +88,7 @@ RUN source scl_source enable devtoolset-8 && \
         -DOpenBabel3_INSTALL_PREFIX=/usr/local && \
     make -j${N_PROC} && \
     make -j${N_PROC} install && \
+    make -j${N_PROC} pycaffe && \
     cd .. && \
     rm -rf *
 
