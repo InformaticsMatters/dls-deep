@@ -15,3 +15,4 @@ TAG=${IMAGE_TAG:-latest}
 ( cd rdkit ; docker build . -t "informaticsmatters-deep-rdkit-centos7:${TAG}" --build-arg "from_tag=${TAG}" )
 ( cd cuda ; docker build . -t "informaticsmatters-deep-cuda-centos7:${TAG}" --build-arg "from_tag=${TAG}" )
 ( cd gnina ; docker build . -t "informaticsmatters-deep-gnina-centos7:${TAG}" --build-arg "from_tag=${TAG}" )
+( cd app ; docker build . -t "informaticsmatters-deep-app-centos7:${TAG}" --build-arg "from_tag=${TAG}" )
