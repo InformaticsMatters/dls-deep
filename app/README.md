@@ -1,15 +1,16 @@
-# A gnina/caffe image
-A container image for gnina (from source code) based on a
-corresponding base image.
+# The final (application) image
+A container image for the application, which sits on top of gnina.
 
-Adds the following to a CentOS image: -
+Adds the following: -
 
--   Boost
--   OpenBabel
--   RDKit 
+-   Application scripts
+-   Execution data
+
+Execution is simply accomplished by running `./call_main.sh` from
+the landing directory.
 
 ## Building
 
-    $ docker build . -t informaticsmatters-deep-rdkit-centos7:latest
+    $ docker build . -t informaticsmatters-deep-app-centos8:latest
     
 ---

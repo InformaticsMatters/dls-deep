@@ -1,19 +1,17 @@
-ARG from_image="informaticsmatters-deep-base-centos7"
+ARG from_image="informaticsmatters-deep-base-centos8"
 ARG from_tag="latest"
 FROM ${from_image}:${from_tag}
 
 # System packages -------------------------------------------------------------
 
-RUN yum -y -q install epel-release && \
-    yum -y -q groupinstall 'Development Tools' && \
-    yum -y -q install \
+RUN dnf -y --nogpg install \
         bzip2-devel.x86_64 \
         git \
-        numpy.x86_64 \
-        wget
+        wget \
+        which
 
 # Some modules other frameworks depend on...
-RUN pip3 install \
+RUN pip install \
         numpy==1.17.4 \
         pytest==5.3.1 \
         pyquaternion==0.9.5
@@ -25,7 +23,6 @@ RUN wget https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.
     tar -xzf boost_1_67_0.tar.gz
 WORKDIR boost_1_67_0
 RUN echo "using python : 3.7 ;" > /root/user-config.jam && \
-    source scl_source enable devtoolset-8 && \
     ./bootstrap.sh \
         --with-python=/usr/bin/python3 \
         --with-python-version=3.7 \
@@ -40,15 +37,27 @@ ENV BOOST_ROOT /usr/local
 # A label for this package
 LABEL tool.boost="v1.67.0"
 
+# RapidJSON (1.1.0) -----------------------------------------------------------
+
+WORKDIR /root
+
+RUN git clone https://github.com/Tencent/rapidjson.git
+WORKDIR rapidjson
+RUN git checkout tags/v1.1.0
+
+# RapidJSON is a header-only C++ library.
+# You just need the include/rapidjson folder in the system include path.
+ENV CPLUS_INCLUDE_PATH ${CPLUS_INCLUDE_PATH}:/root/rapidjson/include
+
+# A label for this package
+LABEL tool.rapidjson="v1.1.0"
+
 # OpenBabel (3.0.0) -----------------------------------------------------------
 
-# Use system rapidjson rather than the built-in one?
 # libxml2 and cairo are probably not completely necessary,
-# they're her eto avoid some cmake warnings but the lack of these
+# they're here to avoid some cmake warnings but the lack of these
 # frameworks is probably harmless.
-RUN yum -y -q install \
-        rapidjson \
-        rapidjson-devel \
+RUN dnf -y --nogpg install \
         libxml2-devel \
         cairo-devel
 
@@ -74,8 +83,7 @@ RUN git checkout tags/openbabel-3-0-0
 # FOR NOW I'VE SET 'WITH_MAEPARSER=off'
 
 WORKDIR build
-RUN source scl_source enable devtoolset-8 && \
-    cmake .. \
+RUN cmake .. \
         -DPYTHON_EXECUTABLE=/usr/bin/python3 \
         -DWITH_MAEPARSER=off && \
     make -j${N_PROC} && \
@@ -91,7 +99,7 @@ ENV CPLUS_INCLUDE_PATH ${CPLUS_INCLUDE_PATH}:/usr/local/include/openbabel3
 # A label for this package
 LABEL tool.openbabel="v3.0.0"
 
-# RDkit (2019.09.1) -----------------------------------------------------------
+# RDKit (2019.09.1) -----------------------------------------------------------
 
 # Jack uses 2018_03_04 but I get build problems with this
 # relating to python and boost. At least 2019_09_01 builds.
@@ -103,8 +111,7 @@ RUN wget https://github.com/rdkit/rdkit/archive/Release_2019_09_1.tar.gz 2> /dev
 
 # Build...
 WORKDIR rdkit-Release_2019_09_1/build
-RUN source scl_source enable devtoolset-8 && \
-    cmake .. \
+RUN cmake .. \
         -DCMAKE_CXX_FLAGS=-w \
         -DPYTHON_EXECUTABLE=/usr/bin/python3 \
         -DPYTHON_INCLUDE_DIR=/usr/local/include/python3.7m \

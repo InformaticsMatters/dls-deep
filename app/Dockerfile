@@ -1,4 +1,4 @@
-ARG from_image="informaticsmatters-deep-gnina-centos7"
+ARG from_image="informaticsmatters-deep-gnina-centos8"
 ARG from_tag="latest"
 FROM ${from_image}:${from_tag}
 
@@ -12,4 +12,4 @@ RUN pip3 install -r requirements.txt && \
     chmod -R 0755 *.py && \
     chmod -R 0755 *.sh
 
-#ENV PYTHONPATH /usr/local/python/caffe:/usr/local/lib/python3.7/site-packages
+ENV PYTHONPATH /usr/local/python:${PYTHONPATH}
