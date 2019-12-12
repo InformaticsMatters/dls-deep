@@ -5,11 +5,13 @@
 # Alan Christie
 # December 2019
 
-# If IMAGE_TAG is defined we'll use that as the tag,
-# if not the images are built as "latest"
 set -euxo pipefail
 
+# If IMAGE_TAG is defined we'll use that as the tag,
+# if not the images are built as "latest"
 TAG=${IMAGE_TAG:-latest}
+# Also allow the number of processors to be defined
+# Default is 4
 PROCESSORS=${PROC:-4}
 
 ( cd base ; docker build . -t "informaticsmatters-deep-base-centos8:${TAG}" --build-arg "n_proc=${PROCESSORS}")
