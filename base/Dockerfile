@@ -4,7 +4,8 @@ LABEL maintainer="achristie@informaticsmatters.com"
 
 # The number of processors
 # (for faster, multi-threaded make)
-ARG N_PROC=4
+ARG n_proc=4
+ENV N_PROC ${n_proc}
 
 # Dveleopment Tools -----------------------------------------------------------
 
@@ -65,7 +66,5 @@ RUN pip install --upgrade pip
 LABEL tool.python="v3.7.5"
 
 # Wrap-up ---------------------------------------------------------------------
-
-ENV N_PROC ${N_PROC}
 
 WORKDIR /root

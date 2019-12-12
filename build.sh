@@ -10,8 +10,9 @@
 set -euxo pipefail
 
 TAG=${IMAGE_TAG:-latest}
+PROCESSORS=${PROC:-4}
 
-( cd base ; docker build . -t "informaticsmatters-deep-base-centos8:${TAG}" )
+( cd base ; docker build . -t "informaticsmatters-deep-base-centos8:${TAG}" --build-arg "n_proc=${PROCESSORS}")
 ( cd rdkit ; docker build . -t "informaticsmatters-deep-rdkit-centos8:${TAG}" --build-arg "from_tag=${TAG}" )
 ( cd cuda ; docker build . -t "informaticsmatters-deep-cuda-centos8:${TAG}" --build-arg "from_tag=${TAG}" )
 ( cd gnina ; docker build . -t "informaticsmatters-deep-gnina-centos8:${TAG}" --build-arg "from_tag=${TAG}" )
