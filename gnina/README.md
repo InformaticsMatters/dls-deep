@@ -9,6 +9,6 @@ Adds the following to a CentOS image: -
 
 ## Building
 
-    $ docker build . -t informaticsmatters-deep-gnina-centos8:latest
+    $ docker build . -t informaticsmatters/deep-gnina-centos8:latest
     
 ---

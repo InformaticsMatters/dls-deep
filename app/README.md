@@ -11,6 +11,6 @@ the landing directory.
 
 ## Building
 
-    $ docker build . -t informaticsmatters-deep-app-centos8:latest
+    $ docker build . -t informaticsmatters/deep-app-centos8:latest
     
 ---

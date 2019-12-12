@@ -9,6 +9,6 @@ A CentOS 8 image that contains the following: -
 
 ## Building
 
-    $ docker build . -t informaticsmatters-deep-base-centos8:latest
+    $ docker build . -t informaticsmatters/deep-base-centos8:latest
     
 ---
