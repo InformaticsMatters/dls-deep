@@ -10,7 +10,7 @@ Adds the following to the image: -
 
 ## Building
 
-    $ docker build . -t informaticsmatters/deep-rdkit-ubuntu:latest
+    $ docker build . -t informaticsmatters/deep-rdkit-ubuntu:latest --network=host 
 
 ## Running
 

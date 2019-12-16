@@ -9,7 +9,7 @@ An Ubuntu 16.04 image that contains the following: -
 
 ## Building
 
-    $ docker build . -t informaticsmatters/deep-base-ubuntu:latest
+    $ docker build . -t informaticsmatters/deep-base-ubuntu:latest --network=host 
 
 ## Running
 

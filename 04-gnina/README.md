@@ -9,7 +9,7 @@ Adds the following to the image: -
 
 ## Building
 
-    $ docker build . -t informaticsmatters/deep-gnina-ubuntu:latest
+    $ docker build . -t informaticsmatters/deep-gnina-ubuntu:latest --network=host
 
 ## Running
 

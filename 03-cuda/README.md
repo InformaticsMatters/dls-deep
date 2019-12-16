@@ -7,7 +7,7 @@ Adds the following to the image: -
 
 ## Building
 
-    $ docker build . -t informaticsmatters/deep-cuda-ubuntu:latest
+    $ docker build . -t informaticsmatters/deep-cuda-ubuntu:latest --network=host
 
 ## Running
 
