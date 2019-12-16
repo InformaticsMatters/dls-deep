@@ -14,8 +14,8 @@ TAG=${IMAGE_TAG:-latest}
 # Default is 4
 PROCESSORS=${PROC:-4}
 
-( cd base ; docker build . -t "informaticsmatters/deep-base-centos8:${TAG}" --build-arg "n_proc=${PROCESSORS}")
-( cd rdkit ; docker build . -t "informaticsmatters/deep-rdkit-centos8:${TAG}" --build-arg "from_tag=${TAG}" )
-( cd cuda ; docker build . -t "informaticsmatters/deep-cuda-centos8:${TAG}" --build-arg "from_tag=${TAG}" )
-( cd gnina ; docker build . -t "informaticsmatters/deep-gnina-centos8:${TAG}" --build-arg "from_tag=${TAG}" )
-( cd app ; docker build . -t "informaticsmatters/deep-app-centos8:${TAG}" --build-arg "from_tag=${TAG}" )
+( cd 01-base ; docker build . -t "informaticsmatters/deep-base-centos8:${TAG}" --network=host --build-arg "n_proc=${PROCESSORS}")
+( cd 02-rdkit ; docker build . -t "informaticsmatters/deep-rdkit-centos8:${TAG}" --network=host --build-arg "from_tag=${TAG}" )
+( cd 03-cuda ; docker build . -t "informaticsmatters/deep-cuda-centos8:${TAG}" --network=host --build-arg "from_tag=${TAG}" )
+( cd 04-gnina ; docker build . -t "informaticsmatters/deep-gnina-centos8:${TAG}" --network=host --build-arg "from_tag=${TAG}" )
+( cd 05-app ; docker build . -t "informaticsmatters/deep-app-centos8:${TAG}" --network=host --build-arg "from_tag=${TAG}" )
