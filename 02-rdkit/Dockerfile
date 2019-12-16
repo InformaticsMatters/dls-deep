@@ -1,14 +1,14 @@
-ARG from_image="informaticsmatters/deep-base-centos8"
+ARG from_image="informaticsmatters/deep-base-ubuntu"
 ARG from_tag="latest"
 FROM ${from_image}:${from_tag}
 
 # System packages -------------------------------------------------------------
 
-RUN dnf -y --nogpg install \
-        bzip2-devel.x86_64 \
+RUN apt-get -y install \
         git \
-        wget \
-        which
+        libbz2-dev \
+        lzma \
+        wget
 
 # Some modules other frameworks depend on...
 RUN pip install \
@@ -22,11 +22,11 @@ WORKDIR /root/boost
 RUN wget https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.gz 2> /dev/null && \
     tar -xzf boost_1_67_0.tar.gz
 WORKDIR boost_1_67_0
-RUN echo "using python : 3.7 ;" > /root/user-config.jam && \
+RUN echo "using python : 3.5 ;" > /root/user-config.jam && \
     ./bootstrap.sh \
-        --with-python=/usr/bin/python3 \
-        --with-python-version=3.7 \
-        --with-python-root=/usr/local/lib/python3.7 && \
+        --with-python=/usr/bin/python \
+        --with-python-version=3.5 \
+        --with-python-root=/usr/lib/python3.5 && \
     ./b2 -j${N_PROC} install && \
     cd .. && \
     rm -rf *
@@ -54,12 +54,12 @@ LABEL tool.rapidjson="v1.1.0"
 
 # OpenBabel (3.0.0) -----------------------------------------------------------
 
-# libxml2 and cairo are probably not completely necessary,
+# xml2 and cairo are probably not completely necessary,
 # they're here to avoid some cmake warnings but the lack of these
 # frameworks is probably harmless.
-RUN dnf -y --nogpg install \
-        libxml2-devel \
-        cairo-devel
+#RUN apt-get -y install \
+#        libxml2-dev \
+#        libcairo-dev
 
 WORKDIR /root
 RUN git clone https://github.com/openbabel/openbabel.git
@@ -84,7 +84,7 @@ RUN git checkout tags/openbabel-3-0-0
 
 WORKDIR build
 RUN cmake .. \
-        -DPYTHON_EXECUTABLE=/usr/bin/python3 \
+        -DPYTHON_EXECUTABLE=/usr/bin/python \
         -DWITH_MAEPARSER=off && \
     make -j${N_PROC} && \
     make -j${N_PROC} install && \
@@ -110,31 +110,17 @@ RUN wget https://github.com/rdkit/rdkit/archive/Release_2019_09_1.tar.gz 2> /dev
     rm Release_2019_09_1.tar.gz
 
 # Build...
-WORKDIR rdkit-Release_2019_09_1/build
+WORKDIR ${RDBASE}/build
 RUN cmake .. \
         -DCMAKE_CXX_FLAGS=-w \
-        -DPYTHON_EXECUTABLE=/usr/bin/python3 \
-        -DPYTHON_INCLUDE_DIR=/usr/local/include/python3.7m \
-        -DPYTHON_LIBRARY=/usr/local/lib/libpython3.7m.so \
-        -DPYTHON_NUMPY_INCLUDE_PATH=/usr/local/lib/python3.7/site-packages/numpy/core/include && \
+        -DPYTHON_EXECUTABLE=/usr/bin/python \
+        -DPYTHON_INCLUDE_DIR=/usr/include/python3.5m \
+        -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.5m.so \
+        -DPYTHON_NUMPY_INCLUDE_PATH=/usr/local/lib/python3.5/dist-packages/numpy/core/include/ && \
     make -j${N_PROC} && \
     make -j${N_PROC} install && \
     cd .. && \
     find . -name "*.o" -exec rm -rf {} \;
-
-# On CentOS
-# Compiling RDKit will add the name of the package to the library.
-# e.g. libSmilesParse.so (on UBUNTU Package) becomes libRDKitSmilesParse.so
-# when compiled on CentOS and we need to make additional links to resemble the
-# UBUNTU names...
-WORKDIR ${RDBASE}/lib
-RUN for i in $(ls -1 *.so.1.2019.09.1); \
-    do \
-        name=`basename $i .so.1.2019.09.1`; \
-        namef=`echo $name | sed 's/RDKit//g'`; \
-        ln -s $i ${namef}.so.1; \
-        ln -s ${namef}.so.1 ${namef}.so; \
-    done
 
 # Update the linker library path
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:${RDBASE}/lib
