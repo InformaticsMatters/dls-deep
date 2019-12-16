@@ -13,7 +13,7 @@ RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86
     dpkg -i cuda-repo-ubuntu1604-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb && \
     apt-key add /var/cuda-repo-10-2-local-10.2.89-440.33.01/7fa2af80.pub && \
     apt-get update && \
-    apt-get -y install cuda && \
+    apt-get -y install cuda-toolkit-10-2 && \
     rm cuda-repo-ubuntu1604-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb
 
 ENV CUDA_ROOT_DIR /usr/local/cuda-10.2
