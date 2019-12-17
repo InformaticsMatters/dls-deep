@@ -12,9 +12,14 @@ set -euxo pipefail
 TAG=${IMAGE_TAG:-latest}
 # Get the number of physcal cores on the system
 # (not execution threads, physical cores)
-sockets=$(lscpu | grep Socket | tr -s ' ' | cut -f2 -d' ')
-per_socket_cores=$(lscpu | grep "per socket" | tr -s ' ' | cut -f4 -d' ')
-(( PROCESSORS = "${sockets}" * "${per_socket_cores}" ))
+os_name=$(uname -s)
+if [[ "${os_name}" == "Linux" ]]; then
+  sockets=$(lscpu | grep Socket | tr -s ' ' | cut -f2 -d' ')
+  per_socket_cores=$(lscpu | grep "per socket" | tr -s ' ' | cut -f4 -d' ')
+  (( PROCESSORS = "${sockets}" * "${per_socket_cores}" ))
+elif [[ "${os_name}" == "Darwin" ]]; then
+  PROCESSORS="$(sysctl -n hw.physicalcpu)"
+fi
 
 ( cd 01-base ; docker build . -t "informaticsmatters/deep-base-ubuntu-1604:${TAG}" --network=host --build-arg "n_proc=${PROCESSORS}")
 ( cd 02-boost ; docker build . -t "informaticsmatters/deep-boost-ubuntu-1604:${TAG}" --network=host --build-arg "from_tag=${TAG}" )
