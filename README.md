@@ -10,13 +10,13 @@ Build the chain of images with: -
 
     $ ./build.sh
     
-If you want to tag the images with something other than `latest` on a 30-core
-machine: -
+>   Building will take a few minutes on a 15-core machine,
+    and significantly longer on smaller machines. For building, the scripts
+    automatically use all the cores available on the host.
 
-    $ IMAGE_TAG=2019.12 PROC=30 ./build.sh
+If you want to tag the images with something other than `latest`: -
 
->   It's a long build. If your're building from scratch and you should prepare
-    for a build time of approximately 80 minutes using a decent 4-core machine. 
+    $ IMAGE_TAG=2019.12 ./build.sh
 
 ## Execution
 To run the container on a GPU host using that has the nvidia docker driver: -
