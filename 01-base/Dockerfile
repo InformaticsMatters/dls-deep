@@ -17,8 +17,6 @@ ENV CUDACXX ${CUDA_BIN_DIR}/nvcc
 
 RUN apt-get update && \
     apt-get -y --no-install-recommends install \
-        apt-utils && \
-    apt-get -y --no-install-recommends install \
         apt-transport-https \
         ca-certificates \
         gnupg \
