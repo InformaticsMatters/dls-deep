@@ -13,3 +13,13 @@ RUN pip install -r requirements.txt && \
     chmod -R 0755 *.sh
 
 ENV PYTHONPATH /usr/local/python:${PYTHONPATH}
+
+# Wrap-up ---------------------------------------------------------------------
+
+# At this point the user can simply enter the container
+# (where they end up in the 'fragalysis_test_files' directory)
+# and run...
+#
+#   ./call_main.sh
+
+CMD ["./call_main.sh"]
