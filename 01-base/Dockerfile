@@ -15,7 +15,7 @@ RUN apt-get -y update && \
         build-essential \
         wget
 
-# cmake (3.16.1) ---------------------------------------------------------------
+# cmake (3.16.1) --------------------------------------------------------------
 # Essential for OpenBabel and libmolgrid builds
 # libmolgrid requires 3.12 or higher.
 
@@ -30,13 +30,9 @@ RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/nul
     apt-get update && \
     apt-get -y install cmake
 
-# Get rid of Python 3.5 (and 2.7) installed by the above.
+# Get rid of Python 2.7 installed by the above.
 
-RUN apt-get -y --purge remove python3.5
 RUN apt-get -y --purge remove python2.7
-RUN apt-get -y --purge remove \
-        python3-minimal \
-        python3.5-minimal
 RUN apt-get -y --purge remove \
         python-minimal \
         python2.7-minimal
