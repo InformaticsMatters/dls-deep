@@ -4,7 +4,7 @@ FROM ${from_image}:${from_tag}
 
 # System packages -------------------------------------------------------------
 
-RUN apt-get -y install \
+RUN apt-get -y --no-install-recommends install \
         git \
         libbz2-dev \
         lzma \

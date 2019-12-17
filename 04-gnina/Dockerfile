@@ -34,7 +34,7 @@ LABEL libmolgrid="${libmolgrid_version}"
 
 ARG gnina_version="16ce46d"
 
-RUN apt-get -y install \
+RUN apt-get -y --no-install-recommends install \
         libeigen3-dev \
         libgoogle-glog-dev \
         libprotobuf-dev \

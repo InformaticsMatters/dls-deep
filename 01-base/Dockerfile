@@ -15,11 +15,15 @@ ENV CUDACXX ${CUDA_BIN_DIR}/nvcc
 # Essential for OpenBabel and libmolgrid builds
 # libmolgrid requires 3.12 or higher.
 
-RUN apt-get -y install \
+RUN apt-get update && \
+    apt-get -y --no-install-recommends install \
+        apt-utils && \
+    apt-get -y --no-install-recommends install \
         apt-transport-https \
         ca-certificates \
         gnupg \
-        software-properties-common
+        software-properties-common \
+        wget
 
 RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add - && \
     apt-add-repository 'deb https://apt.kitware.com/ubuntu/ xenial main' && \
@@ -37,7 +41,7 @@ LABEL tool.cmake="v3.16.1"
 
 # Python 3.5 ------------------------------------------------------------------
 
-RUN apt-get -y install \
+RUN apt-get -y --no-install-recommends install \
         libpython3.5-dev \
         libpython3.5 \
         python3.5 \
@@ -60,7 +64,7 @@ LABEL tool.python="v3.5.2"
 
 # Python (3.7.5) --------------------------------------------------------------
 
-RUN apt-get -y install \
+RUN apt-get -y --no-install-recommendsinstall \
         zlib1g-dev \
         libncurses5-dev \
         libgdbm-dev \
