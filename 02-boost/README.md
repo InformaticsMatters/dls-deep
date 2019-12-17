@@ -10,10 +10,10 @@ Adds the following to the image: -
 
 ## Building
 
-    $ docker build . -t informaticsmatters/deep-rdkit-ubuntu:latest --network=host 
+    $ docker build . -t informaticsmatters/deep-boost-ubuntu:latest --network=host 
 
 ## Running
 
-    $ docker run --rm -it informaticsmatters/deep-rdkit-ubuntu:latest bash
+    $ docker run --rm -it informaticsmatters/deep-boost-ubuntu:latest bash
     
 ---

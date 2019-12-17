@@ -1,49 +1,6 @@
-ARG from_image="informaticsmatters/deep-cuda-ubuntu"
+ARG from_image="informaticsmatters/deep-boost-ubuntu"
 ARG from_tag="latest"
 FROM ${from_image}:${from_tag}
-
-# System packages -------------------------------------------------------------
-
-#RUN apt-get -y install \
-#        git \
-#        golang-goleveldb-dev \
-#        libatlas-dev \
-#        libatlas3-base \
-#        libbz2-dev \
-#        libeigen3-dev \
-#        libgflags2v5 \
-#        libgoogle-glog-dev \
-#        liblmdb-dev \
-#        libopencv-dev \
-#        libprotobuf-dev \
-#        libprotoc-dev \
-#        libreadline-dev \
-#        libsnappy-dev \
-#        libsqlite3-dev \
-#        perl \
-#        protobuf-compiler \
-#        wget \
-#        zlib1g-dev
-
-
-#        atlas-devel.x86_64 \
-#        atlas.x86_64 \
-#        bzip2-devel.x86_64 \
-#        eigen3-devel.noarch \
-#        gflags-devel.x86_64 \
-#        git \
-#        glog-devel.x86_64 \
-#        leveldb-devel.x86_64 \
-#        lmdb-devel.x86_64 \
-#        opencv-devel.x86_64 \
-#        perl-core \
-#        protobuf-compiler.x86_64 \
-#        protobuf-devel.x86_64 \
-#        readline-devel.x86_64 \
-#        snappy-devel.x86_64 \
-#        sqlite-devel.x86_64 \
-#        wget \
-#        zlib-devel.x86_64
 
 # libmolgrid (latest) ---------------------------------------------------------
 
@@ -100,12 +57,6 @@ RUN cmake .. \
         -DPYTHON_EXECUTABLE=/usr/bin/python \
         -DPYTHON_INCLUDE_DIR=/usr/include/python3.5m \
         -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.5m.so \
-#        -DAtlas_BLAS_LIBRARY=/usr/lib64/atlas/libtatlas.so \
-#        -DAtlas_CBLAS_LIBRARY=/usr/lib64/atlas/libtatlas.so \
-#        -DAtlas_LAPACK_LIBRARY=/usr/lib64/atlas/libtatlas.so \
-#        -DHDF5_CXX_COMPILER_EXECUTABLE=/usr/bin/h5c++ \
-#        -DHDF5_C_COMPILER_EXECUTABLE=/usr/bin/h5cc \
-#        -DHDF5_DIFF_EXECUTABLE=/usr/bin/h5diff \
         -DOpenBabel3_INSTALL_PREFIX=/usr/local && \
     make -j${N_PROC} && \
     make -j${N_PROC} install && \

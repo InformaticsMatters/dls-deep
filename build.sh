@@ -10,12 +10,13 @@ set -euxo pipefail
 # If IMAGE_TAG is defined we'll use that as the tag,
 # if not the images are built as "latest"
 TAG=${IMAGE_TAG:-latest}
-# Also allow the number of processors to be defined
-# Default is 4
-PROCESSORS=${PROC:-4}
+# Get the number of physcal cores on the system
+# (not execution threads, physical cores)
+sockets=$(lscpu | grep Socket | tr -s ' ' | cut -f2 -d' ')
+per_socket_cores=$(lscpu | grep "per socket" | tr -s ' ' | cut -f4 -d' ')
+(( PROCESSORS = "${sockets}" * "${per_socket_cores}" ))
 
 ( cd 01-base ; docker build . -t "informaticsmatters/deep-base-ubuntu:${TAG}" --network=host --build-arg "n_proc=${PROCESSORS}")
-( cd 02-rdkit ; docker build . -t "informaticsmatters/deep-rdkit-ubuntu:${TAG}" --network=host --build-arg "from_tag=${TAG}" )
-( cd 03-cuda ; docker build . -t "informaticsmatters/deep-cuda-ubuntu:${TAG}" --network=host --build-arg "from_tag=${TAG}" )
+( cd 02-boost ; docker build . -t "informaticsmatters/deep-boost-ubuntu:${TAG}" --network=host --build-arg "from_tag=${TAG}" )
 ( cd 04-gnina ; docker build . -t "informaticsmatters/deep-gnina-ubuntu:${TAG}" --network=host --build-arg "from_tag=${TAG}" )
 ( cd 05-app ; docker build . -t "informaticsmatters/deep-app-ubuntu:${TAG}" --network=host --build-arg "from_tag=${TAG}" )
