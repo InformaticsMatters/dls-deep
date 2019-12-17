@@ -9,10 +9,10 @@ An Ubuntu 16.04 image that contains the following: -
 
 ## Building
 
-    $ docker build . -t informaticsmatters/deep-base-ubuntu:latest --network=host 
+    $ docker build . -t informaticsmatters/deep-base-ubuntu-1604:latest --network=host 
 
 ## Running
 
-    $ docker run --rm -it informaticsmatters/deep-rdkit-ubuntu:latest bash
+    $ docker run --rm -it informaticsmatters/deep-rdkit-ubuntu-1604:latest bash
     
 ---

@@ -1,4 +1,4 @@
-ARG from_image="informaticsmatters/deep-base-ubuntu"
+ARG from_image="informaticsmatters/deep-base-ubuntu-1604"
 ARG from_tag="latest"
 FROM ${from_image}:${from_tag}
 

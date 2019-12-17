@@ -8,6 +8,6 @@ Adds the following: -
 
 ## Building
 
-    $ docker build . -t informaticsmatters/deep-app-ubuntu:latest --network=host
+    $ docker build . -t informaticsmatters/deep-app-ubuntu-1604:latest --network=host
     
 ---

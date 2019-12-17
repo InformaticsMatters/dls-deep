@@ -21,7 +21,7 @@ machine: -
 ## Execution
 To run from on a GPU host using the nvidia docker driver: -
 
-    $ docker run --gpus all --rm -it informaticsmatters/deep-app-ubuntu:latest bash
+    $ docker run --gpus all --rm -it informaticsmatters/deep-app-ubuntu-1604:latest bash
     [...]
     # ./call_main.sh
     
