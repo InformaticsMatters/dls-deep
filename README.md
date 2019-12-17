@@ -19,11 +19,12 @@ machine: -
     for a build time of approximately 80 minutes using a decent 4-core machine. 
 
 ## Execution
-To run from on a GPU host using the nvidia docker driver: -
+To run the container on a GPU host using that has the nvidia docker driver: -
 
     $ docker run --gpus all --rm -it informaticsmatters/deep-app-ubuntu-1604:latest bash
-    [...]
     # ./call_main.sh
+    [...]
+    Finished! Exiting...
     
 ---
 
