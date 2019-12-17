@@ -8,7 +8,7 @@ WORKDIR /root/train
 ADD files.tar.gz ./
 WORKDIR fragalysis_test_files
 COPY requirements.txt ./
-RUN pip3 install -r requirements.txt && \
+RUN pip install -r requirements.txt && \
     chmod -R 0755 *.py && \
     chmod -R 0755 *.sh
 

@@ -43,6 +43,7 @@ RUN apt-get -y --no-install-recommends install \
         libpython3.5-dev \
         libpython3.5 \
         python3.5 \
+        python3-setuptools \
         python3-pip
 
 RUN ln -s /usr/bin/python3.5 /usr/bin/python && \
