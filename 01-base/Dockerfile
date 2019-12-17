@@ -62,7 +62,7 @@ LABEL tool.python="v3.5.2"
 
 # Python (3.7.5) --------------------------------------------------------------
 
-RUN apt-get -y --no-install-recommendsinstall \
+RUN apt-get -y --no-install-recommends install \
         zlib1g-dev \
         libncurses5-dev \
         libgdbm-dev \
