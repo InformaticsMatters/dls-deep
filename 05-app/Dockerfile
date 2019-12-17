@@ -21,5 +21,3 @@ ENV PYTHONPATH /usr/local/python:${PYTHONPATH}
 # and run...
 #
 #   ./call_main.sh
-
-CMD ["./call_main.sh"]

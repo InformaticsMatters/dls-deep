@@ -20,7 +20,8 @@ RUN pip install \
 
 WORKDIR /root/boost
 RUN wget https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.gz 2> /dev/null && \
-    tar -xzf boost_1_67_0.tar.gz
+    tar -xzf boost_1_67_0.tar.gz && \
+    rm boost_1_67_0.tar.gz
 WORKDIR boost_1_67_0
 RUN echo "using python : 3.5 ;" > /root/user-config.jam && \
     ./bootstrap.sh \
