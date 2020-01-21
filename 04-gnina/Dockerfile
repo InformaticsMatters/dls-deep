@@ -64,7 +64,7 @@ RUN cmake .. \
     cd .. && \
     rm -rf *
 
-ENV PYTHONPATH /usr/local/lib
+ENV PYTHONPATH /usr/local/lib:$PYTHONPATH
 
 # A label for this package
 LABEL tool.gnina=${gnina_version}

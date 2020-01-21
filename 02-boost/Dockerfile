@@ -69,7 +69,7 @@ RUN cmake .. \
     make -j${N_PROC} install && \
     cd .. && \
     rm -rf *
-ENV PYTHONPATH /usr/local/lib
+ENV PYTHONPATH /usr/local/lib:$PYTHONPATH
 
 # Update the linker library path
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/lib
