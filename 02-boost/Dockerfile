@@ -63,11 +63,13 @@ RUN git checkout tags/openbabel-3-0-0
 WORKDIR build
 RUN cmake .. \
         -DPYTHON_EXECUTABLE=/usr/bin/python \
+	-DPYTHON_BINDINGS=ON \
         -DWITH_MAEPARSER=off && \
     make -j${N_PROC} && \
     make -j${N_PROC} install && \
     cd .. && \
     rm -rf *
+ENV PYTHONPATH /usr/local/lib
 
 # Update the linker library path
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/lib

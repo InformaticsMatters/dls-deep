@@ -12,7 +12,7 @@ RUN pip install -r requirements.txt && \
     chmod -R 0755 *.py && \
     chmod -R 0755 *.sh
 
-ENV PYTHONPATH /usr/local/python:${PYTHONPATH}
+ENV PYTHONPATH /usr/local/python:${PYTHONPATH}:/usr/local/lib
 
 # Wrap-up ---------------------------------------------------------------------
 
