@@ -7,6 +7,9 @@ FROM ${from_image}:${from_tag}
 RUN apt-get -y --no-install-recommends install \
         git \
         libbz2-dev \
+        libeigen3-dev \
+        libxml2-dev \
+        swig3.0 \
         lzma \
         wget
 
@@ -63,18 +66,20 @@ RUN git checkout tags/openbabel-3-0-0
 WORKDIR build
 RUN cmake .. \
         -DPYTHON_EXECUTABLE=/usr/bin/python \
-	-DPYTHON_BINDINGS=ON \
+        -DPYTHON_BINDINGS=ON \
+        -DRUN_SWIG=ON \
         -DWITH_MAEPARSER=off && \
     make -j${N_PROC} && \
     make -j${N_PROC} install && \
     cd .. && \
     rm -rf *
-ENV PYTHONPATH /usr/local/lib:$PYTHONPATH
 
 # Update the linker library path
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/lib
 # And include path
 ENV CPLUS_INCLUDE_PATH ${CPLUS_INCLUDE_PATH}:/usr/local/include/openbabel3
+# And the PYTHONPATH
+ENV PYTHONPATH /usr/local/lib:${PYTHONPATH}
 
 # A label for this package
 LABEL tool.openbabel="v3.0.0"
