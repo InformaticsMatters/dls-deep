@@ -46,14 +46,14 @@ The individual Dockerfiles will document all the tools required to build
 (and run) the image.
   
 ### Run-time dependencies
-This is a little more tricky as a full chain of runtime dependencies is
+This is a little more tricky as a full chain of run-time dependencies is
 not evident from the Dockerfile content. The package manager and Python
 may pull in many packages and modules based on the user's requirements.
 Nevertheless a _best guess_ at a set of _user level_ dependencies follows.
  
-A word of caution - this list is _guide_. A full list of dependencies will
+A word of **caution** - this list is _guide_. A full list of dependencies will
 probably require closer examination and/or the author's input. Nevertheless
-this is a reasonable starting point for a lit of key run-time dependencies: -
+this is a reasonable starting point for a list of key run-time dependencies: -
 
 -   `CUDA 10.2`
 -   `Python 3.5`. The dls-deep image is built with 3.5 although I suspect it
@@ -63,10 +63,11 @@ this is a reasonable starting point for a lit of key run-time dependencies: -
     - `pyquaternion == 0.9.5`
 -   `boost 1.67.0`
 -   `openbabel 3.0.0`
--   `libmolgrid` . There were no formal releases at the time we constructed
-    the Dockerfile so we used a fixed commit `a5bd251`. We cannot confirm that
-    the new (official) versions of `v0.1` or `v0.1.1` will work.
--   `gnina`. there are no official releases of **gnina**. We
+-   `libmolgrid` . There were no formal releases at the time we concluded our
+    main phase of development. We currently use a fixed commit `a5bd251`.
+    We cannot confirm whether the new (official) versions of `v0.1` or
+    `v0.1.1` will work.
+-   `gnina`. There are no official releases of **gnina**. We
     used the fixed commit `16ce46d`.
     
 It's unclear as to whether the following are run-time or build-time
@@ -74,18 +75,19 @@ dependencies, but are listed here, _just in case_.
 
 -   `rapidjson 1.1.0`
 
-Be prepared to have to compile some items from source code as several are very
-much _bleeding edge_ and are available only in source form, not as packages.
-For this you will need, at the very least: -
-
--   `gcc (v8.3.1 or better)`
--   `cmake (at least v3.15.5 for libmolgrid)`
-
 >   The build includes a large number of system packages obtained with the
     package manager (`apt-get`). It's extremely difficult to know whether
     they're for running, building or both. If all else fails add all the
     packages identified by the `apt-get` lines in the various Dockerfiles.
     
+Be prepared to be forced to compile some items from source as several are very
+much _bleeding edge_ (some without any formal release) and, as such, are
+available only in source form, not as packages. For this you will need,
+at the very least: -
+
+-   `gcc (v8.3.1 or better)`
+-   `cmake (at least v3.15.5 for libmolgrid)`
+
 ---
 
 [nvidia docker]: https://github.com/NVIDIA/nvidia-docker
