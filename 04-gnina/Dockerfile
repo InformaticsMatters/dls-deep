@@ -35,7 +35,6 @@ LABEL libmolgrid="${libmolgrid_version}"
 ARG gnina_version="16ce46d"
 
 RUN apt-get -y --no-install-recommends install \
-        libeigen3-dev \
         libgoogle-glog-dev \
         libprotobuf-dev \
         protobuf-compiler \
@@ -64,7 +63,7 @@ RUN cmake .. \
     cd .. && \
     rm -rf *
 
-ENV PYTHONPATH /usr/local/lib:$PYTHONPATH
+ENV PYTHONPATH /usr/local/python:${PYTHONPATH}
 
 # A label for this package
 LABEL tool.gnina=${gnina_version}

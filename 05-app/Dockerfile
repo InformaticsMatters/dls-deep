@@ -18,8 +18,6 @@ RUN pip install -r requirements.txt && \
     chmod -R 0755 *.py && \
     chmod -R 0755 *.sh
 
-ENV PYTHONPATH /usr/local/python:/usr/local/lib:${PYTHONPATH}
-
 # Wrap-up ---------------------------------------------------------------------
 
 # At this point the user can simply enter the container

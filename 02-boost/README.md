@@ -4,9 +4,8 @@ corresponding base image.
 
 Adds the following to the image: -
 
--   Boost
--   OpenBabel
--   RDKit 
+-   Boost 1.67.0
+-   OpenBabel 3.0.0
 
 ## Building
 
