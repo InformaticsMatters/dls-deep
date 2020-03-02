@@ -4,8 +4,14 @@ FROM ${from_image}:${from_tag}
 
 # App -------------------------------------------------------------------------
 
-WORKDIR /root/train
+WORKDIR /train
 ADD files.tar.gz ./
+
+RUN chmod 755 /train &&\
+  chmod 775 -R /train/fragalysis_test_files &&\
+  chmod 777 /train/fragalysis_test_files &&\
+  chown -R 0.0 /train
+
 WORKDIR fragalysis_test_files
 COPY requirements.txt ./
 RUN pip install -r requirements.txt && \
