@@ -18,6 +18,11 @@ RUN pip install -r requirements.txt && \
     chmod -R 0755 *.py && \
     chmod -R 0755 *.sh
 
+# this is added temporarily to allow debugging
+RUN adduser ubuntu --uid 1000 --gid 0 --quiet --no-create-home --system &&\
+    apt-get install sudo -y
+
+
 # Wrap-up ---------------------------------------------------------------------
 
 # At this point the user can simply enter the container
