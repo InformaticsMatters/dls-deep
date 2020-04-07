@@ -6,6 +6,7 @@ FROM ${from_image}:${from_tag}
 
 WORKDIR /train
 ADD files.tar.gz ./
+COPY models/* /train/fragalysis_test_files/resources/
 
 RUN chmod 755 /train &&\
   chmod 775 -R /train/fragalysis_test_files &&\
